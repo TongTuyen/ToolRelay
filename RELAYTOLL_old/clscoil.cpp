@@ -19,19 +19,19 @@ QGroupBox *clsCoil::createCoil()
        m_vbox->addWidget(m_pCoilOff);
        m_vbox->addStretch(1);
        m_groupBox->setLayout(m_vbox);
-       m_groupBox->setFixedSize(56,70);
+       m_groupBox->setFixedSize(55,70);
        return m_groupBox;
 }
 
-QGroupBox *clsCoil::Namerelay(QString *NameDevice,QString *IdDevice)
+QGroupBox *clsCoil::Namerelay(uint8_t *relayID)
 {
-    m_namerelay1->setText(*NameDevice);
-    m_namerelay2->setText(*IdDevice);
+    m_namerelay1->setText("Relay");
+    m_namerelay2->setText((QString)*relayID);
     m_vbox->addWidget(m_namerelay1);
     m_vbox->addWidget(m_namerelay2);
     m_vbox->addStretch(1);
     m_groupBox->setLayout(m_vbox);
-    m_groupBox->setFixedSize(56,70);
+    m_groupBox->setFixedSize(50,70);
     return m_groupBox;
 }
 

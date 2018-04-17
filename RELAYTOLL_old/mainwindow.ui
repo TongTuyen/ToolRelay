@@ -39,10 +39,10 @@
      <widget class="QGroupBox" name="setting">
       <property name="geometry">
        <rect>
-        <x>60</x>
+        <x>10</x>
         <y>10</y>
-        <width>571</width>
-        <height>291</height>
+        <width>1271</width>
+        <height>101</height>
        </rect>
       </property>
       <property name="font">
@@ -78,7 +78,7 @@
       <widget class="QLabel" name="label_2">
        <property name="geometry">
         <rect>
-         <x>280</x>
+         <x>430</x>
          <y>40</y>
          <width>71</width>
          <height>16</height>
@@ -128,7 +128,7 @@
       <widget class="QComboBox" name="cbbDevice">
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>520</x>
          <y>40</y>
          <width>81</width>
          <height>22</height>
@@ -158,8 +158,8 @@
       <widget class="QComboBox" name="cbbCom">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>110</y>
+         <x>330</x>
+         <y>40</y>
          <width>81</width>
          <height>22</height>
         </rect>
@@ -173,8 +173,8 @@
       <widget class="QLabel" name="label_3">
        <property name="geometry">
         <rect>
-         <x>40</x>
-         <y>110</y>
+         <x>240</x>
+         <y>40</y>
          <width>71</width>
          <height>16</height>
         </rect>
@@ -193,8 +193,8 @@
       <widget class="QLabel" name="label_4">
        <property name="geometry">
         <rect>
-         <x>280</x>
-         <y>110</y>
+         <x>650</x>
+         <y>40</y>
          <width>71</width>
          <height>16</height>
         </rect>
@@ -213,8 +213,8 @@
       <widget class="QLineEdit" name="txtAddress">
        <property name="geometry">
         <rect>
-         <x>370</x>
-         <y>110</y>
+         <x>760</x>
+         <y>40</y>
          <width>81</width>
          <height>20</height>
         </rect>
@@ -228,10 +228,10 @@
       <widget class="QPushButton" name="Start">
        <property name="geometry">
         <rect>
-         <x>370</x>
-         <y>180</y>
-         <width>81</width>
-         <height>31</height>
+         <x>1000</x>
+         <y>40</y>
+         <width>91</width>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -246,10 +246,10 @@
       <widget class="QPushButton" name="btadd">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>182</y>
-         <width>81</width>
-         <height>31</height>
+         <x>880</x>
+         <y>40</y>
+         <width>91</width>
+         <height>23</height>
         </rect>
        </property>
        <property name="font">
@@ -261,14 +261,58 @@
         <string>Add</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="btdelete">
+       <property name="geometry">
+        <rect>
+         <x>1120</x>
+         <y>40</y>
+         <width>91</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="DI_groupBox">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>120</y>
+        <width>341</width>
+        <height>451</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Digital Input</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="AI_groupBox">
+      <property name="geometry">
+       <rect>
+        <x>930</x>
+        <y>120</y>
+        <width>351</width>
+        <height>451</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Analog Input</string>
+      </property>
      </widget>
      <widget class="QGroupBox" name="Relay_groupBox">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>10</y>
-        <width>591</width>
-        <height>291</height>
+        <x>10</x>
+        <y>120</y>
+        <width>541</width>
+        <height>451</height>
        </rect>
       </property>
       <property name="title">
@@ -277,54 +321,14 @@
       <widget class="QWidget" name="gridLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>0</x>
          <y>20</y>
-         <width>561</width>
-         <height>261</height>
+         <width>541</width>
+         <height>421</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="main_gridLayout"/>
       </widget>
-     </widget>
-     <widget class="QGroupBox" name="DI_groupBox">
-      <property name="geometry">
-       <rect>
-        <x>670</x>
-        <y>310</y>
-        <width>591</width>
-        <height>291</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Digital Input</string>
-      </property>
-      <widget class="QWidget" name="gridLayoutWidget_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>561</width>
-         <height>261</height>
-        </rect>
-       </property>
-       <layout class="QGridLayout" name="DI_gridLayout"/>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="AO_groupBox">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>310</y>
-        <width>571</width>
-        <height>291</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Analog</string>
-      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">

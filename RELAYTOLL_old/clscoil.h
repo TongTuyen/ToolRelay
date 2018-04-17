@@ -15,7 +15,7 @@ public:
     clsCoil(int coilid);
     explicit clsCoil(QWidget *parent = 0);
     QGroupBox *createCoil();
-    QGroupBox *Namerelay(QString *NameDevice,QString *IdDevice);
+    QGroupBox *Namerelay(uint8_t *relayID);
     void getCoilValues(uint8_t *coilvalues);
     void setCoilValues(int *coilvalues);
     void setCoilID(int coilid);

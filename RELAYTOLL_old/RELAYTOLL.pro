@@ -20,8 +20,7 @@ SOURCES += main.cpp\
     clsrelay.cpp \
     crcmodbus.cpp \
     QRingBuffer.cpp \
-    clscoil.cpp \
-    clsdiscreteinput.cpp
+    clscoil.cpp
 
 HEADERS  += Devicemanager.h \
     imodbusdevice.h \
@@ -29,7 +28,6 @@ HEADERS  += Devicemanager.h \
     crcmodbus.h \
     QRingBuffer.h \
     typedefs.h \
-    clscoil.h \
-    clsdiscreteinput.h
+    clscoil.h
 
 FORMS    += mainwindow.ui

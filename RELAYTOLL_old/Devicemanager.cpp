@@ -6,7 +6,7 @@
 #include <QRadioButton>
 #include <QGridLayout>
 #include <QGroupBox>
-#include <qcolor.h>
+
 #include <memory>
 
 
@@ -104,12 +104,11 @@ void MainWindow::onTimerTicked()
     else if(ui->cbbProtocol->currentIndex()==0&&ui->cbbDevice->currentIndex()==0)
     {
        qDebug() << "RELAY MODBUS PROTOCOL";
-       ProcessMODBUS();
+        ProcessMODBUS();
     }
     else if(ui->cbbProtocol->currentIndex()==0&&ui->cbbDevice->currentIndex()==1)
     {
        qDebug() << "DI MODBUS PROTOCOL";
-       ProcessMODBUS_DI();
     }
 
 
@@ -119,17 +118,12 @@ void MainWindow::on_Start_clicked()
 
     for(int i=0;i<btadd_id;i++)
     {
-//       m_di_dataID[i]= ArrayDI[i].GetDeviceID();
-//        qDebug("\n--------------dia chi cua DI% d  ",m_di_dataID[i]);
-//        ArrayDI[i].getCoilData(&m_di_datacoil[i]);
-//        qDebug("----------------DATACOIL%.2x",m_di_datacoil[i]);
-       // DI
-        qDebug("\n-----Start  ");
-        m_di_dataID[i]=ArrayDI[i].GetDeviceID();
-        qDebug("\n-----dia chi cua DI% d  ",m_di_dataID[i]);
-        ArrayDI[i].getCoilData(&mu16_di_datacoil[i]);
-        qDebug("-----DATACOIL%.2x",mu16_di_datacoil[i]);
+       dataID[i]= ArrayRelay[i].GetDeviceID();
+        qDebug("\n--------------dia chi cua relay%d ",dataID[i]);
+        ArrayRelay[i].getCoilData(&datacoil[i]);
+        qDebug("----------------DATACOIL%.2x",datacoil[i]);
     }
+   // on_txtAddress_textChanged();
     if(this->m_bRunning== false)
     {
     RunSimulation(true);
@@ -157,8 +151,8 @@ void MainWindow::on_Start_clicked()
 
 void MainWindow::on_btadd_clicked()
 {
-     on_txtAddress_textChanged();
-     qDebug() << "btadd_id "<<btadd_id;
+    on_txtAddress_textChanged();
+    qDebug() << "btadd_id "<<btadd_id;
      if(ui->cbbProtocol->currentIndex()==0&&ui->cbbDevice->currentIndex()==0)
      {
        // qDebug() << "RELAY MODBUS PROTOCOL";
@@ -174,13 +168,6 @@ void MainWindow::on_btadd_clicked()
      if(ui->cbbProtocol->currentIndex()==0&&ui->cbbDevice->currentIndex()==1)
      {
        // qDebug() << "DI MODBUS PROTOCOL";
-         std::shared_ptr<clsdiscreteinput> DigitalInput = std::make_shared<clsdiscreteinput>();
-         DigitalInput->SetDeviceID(m_u16Address);
-         //DigitalInput->SetDevType();
-         DigitalInput->createCoilGroupBox();
-         this->ui->DI_gridLayout->addLayout(DigitalInput->getDILayout(), btadd_id, 0);
-       //  relay->getCoilData(&datacoil);
-         ArrayDI[btadd_id]=*DigitalInput;
      }
      btadd_id ++;
 }
@@ -227,11 +214,8 @@ void MainWindow::ProcessMODBUS()
     {
        dataID[i]= ArrayRelay[i].GetDeviceID();
         qDebug("\ndia chi cua relay%d ",dataID[i]);
-       ArrayRelay[i].getCoilData(&datacoil[i]);
+        ArrayRelay[i].getCoilData(&datacoil[i]);
         qDebug("DATACOIL%.2x",datacoil[i]);
-       ArrayRelay[i].getCoilData_DI(&m_di_datacoil[i]);
-//       m_di_dataID[i]=ArrayDI[i].GetDeviceID();
-      // ArrayDI[i].get(&m_di_datacoil[i]);
     }
     int indexid=0;
     while(ucLen>0)
@@ -275,62 +259,6 @@ void MainWindow::ProcessMODBUS()
                         this->pSerialPort->write((const char*)RelayFrame,lenght);
 
                     }//5
-                    else if(pucRecvFrame[1] == 0x0f){
-                        pRxBuffer->BufferPopStream(&pucRecvFrame[2],8);
-                        DecodeFrame(pucRecvFrame,ucLen);
-                        qDebug("RUN MULTIPLE\n  ");
-                        uint8_t mod_command;
-                        if(pucRecvFrame[7]==0xff)
-                        {
-                            qDebug("ON\n  ");
-                            mod_command=pucRecvFrame[7];
-                            uint8_t coilID =0;
-                            //on multiple coil
-                            for(uint8_t i=0;i<8;i++)
-                            {
-                                ArrayRelay[indexid].setCoilData(&mod_command,&i);
-                            }
-                        }
-                        if(pucRecvFrame[7]==0x00)
-                        {
-                            qDebug("OFF\n  ");
-                            mod_command=pucRecvFrame[7];
-                            //off multiple coil
-                            for(uint8_t i=0;i<8;i++)
-                            {
-                                ArrayRelay[indexid].setCoilData(&mod_command,&i);
-                            }
-
-                        }
-                    }
-                    else if(pucRecvFrame[1] == 0x02)
-                    {
-                        //function true , pop 6 byte and crc
-                        pRxBuffer->BufferPopStream(&pucRecvFrame[2],6);
-                        DecodeFrame(pucRecvFrame,ucLen);
-                        // check value relay
-                        // build frame
-                        //qDebug("RUN DI\n  ");
-                        uint8_t RelayFrame[258];
-                        //Slave address
-                        RelayFrame[0]=pucRecvFrame[0];lenght++;
-                        //fuction
-                        RelayFrame[1]=pucRecvFrame[1];lenght++;
-                        //byte count
-                        RelayFrame[2] =sizeof(m_di_datacoil[indexid]);lenght++;
-                        //data
-                        RelayFrame[3]=m_di_datacoil[indexid];lenght++;
-                        qDebug("lenght %.2x " ,m_di_datacoil[indexid]);
-                        qDebug("lenght %i " ,lenght);
-                        //crc
-                        uint16_t crc = ModRTU_CRC(RelayFrame,lenght);
-                        qDebug("datacrc %.4X " ,crc);
-                        RelayFrame[5]=crc>>8;   lenght++;
-                        RelayFrame[4]=crc;  lenght++;
-                        qDebug("lenghtFrame %i " ,lenght);
-                        // write reponse
-                        this->pSerialPort->write((const char*)RelayFrame,lenght);
-                    }
                      else if(pucRecvFrame[1] == 0x05)
                            {
                               uint8_t coilID =0;
@@ -460,75 +388,26 @@ void MainWindow::ProcessMODBUS()
      }//1
 
 
-}
-//0
-void MainWindow::ProcessMODBUS_DI()
+}//0
+
+
+
+void MainWindow::on_btdelete_clicked()
 {
-    static uint8_t  ucLen =0;
-    static uint8_t	pucRecvFrame[258]={0};
-    uint8_t lenght =0;
-    qDebug("\n DI PROCESS MODBUS");
-    ucLen = pRxBuffer->BufferGetCount();
+//             while ui has items
+//                 layoutitem i = layout.takeat(0) //takes the first item
+//                 if (i.widget())
+//                     delete i.widget();
+//                 if (i.layout())
+//                     delete i.layout();
+
+//                 delete i;
+//             loop
     for(int i=0;i<btadd_id;i++)
     {
-       m_di_dataID[i]=ArrayDI[i].GetDeviceID();
-       ArrayDI[i].getCoilData(&mu16_di_datacoil[i]);
-       qDebug("-----DATACOIL%.2x",mu16_di_datacoil[i]);
+
+//        QLayoutItem i = QLayout.takeAt(0);
+//        if(i.)
     }
-    int indexid=0;
-    while(ucLen>0){
 
-        pRxBuffer->BufferPop(&pucRecvFrame[0]);
-        for(int i=0;i<btadd_id;i++)
-        {//2
-            if(pucRecvFrame[0]==m_di_dataID[i])
-                indexid =i;
-
-        }//2
-        if(pucRecvFrame[0]==m_di_dataID[indexid])
-        {//3
-            pRxBuffer->BufferPop(&pucRecvFrame[1]);
-            if(pucRecvFrame[1] == 0x02)
-            {//4
-                //function true , pop 6 byte and crc
-                pRxBuffer->BufferPopStream(&pucRecvFrame[2],6);
-                DecodeFrame(pucRecvFrame,ucLen);
-                // check value relay
-                // build frame
-
-                uint8_t RelayFrame[258];
-                //Slave address
-                RelayFrame[0]=pucRecvFrame[0];lenght++;
-                //fuction
-                RelayFrame[1]=pucRecvFrame[1];lenght++;
-                //byte count
-                RelayFrame[2] =sizeof(mu16_di_datacoil[indexid]);lenght++;
-                //data
-                RelayFrame[3]=mu16_di_datacoil[indexid];lenght++;
-                qDebug("\n-----mu16_di_datacoil %.4x " ,mu16_di_datacoil[indexid]);
-                qDebug("\n-----RelayFrame[3] %.4x " ,RelayFrame[3]);
-                //qDebug("lenght %i " ,lenght);
-                //crc
-                uint16_t crc = ModRTU_CRC(RelayFrame,lenght);
-                qDebug("datacrc %.4X " ,crc);
-                RelayFrame[5]=crc>>8;   lenght++;
-                RelayFrame[4]=crc;  lenght++;
-               // qDebug("lenghtFrame %i " ,lenght);
-                // write reponse
-                this->pSerialPort->write((const char*)RelayFrame,lenght);
-
-            }//4
-        }//3
-
-        if(lenght>=6)
-        {
-
-            ucLen=0;
-            break;
-        }
-    }
 }
-
-
-
-

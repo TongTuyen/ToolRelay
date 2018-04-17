@@ -11,7 +11,6 @@
 #include "imodbusdevice.h"
 #include <memory>
 #include <clsrelay.h>
-#include <clsdiscreteinput.h>
 #include <stdio.h>
 class QRadioButton;
 class QLabel;
@@ -40,13 +39,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     int btadd_id=0;
-    uint8           m_u16Address = 0;
+    uint8        m_u16Address = 0;
     QSerialPort     *pSerialPort;
     QTimer          *pTimer;
     QMutex          *pRxBuffMutex;
     QRingBuffer     *pRxBuffer;
     bool            m_bRunning = false;
-   // QString         Relay;
+    QString Relay;
     ~MainWindow();
 private slots:
     void on_Start_clicked();
@@ -56,24 +55,22 @@ private slots:
 
     void on_btadd_clicked();
 
+    void on_btdelete_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString Comname;
      void on_txtAddress_textChanged();
      static SMODBusFrame_t DecodeFrame(uint8_t* pu8Frame,uint8_t length );
      void ProcessMODBUS();
-     void ProcessMODBUS_DI();
-     // Relay
      uint8_t dataID[50];
      uint8_t datacoil[50];
-     uint8_t m_di_datacoil[50];
+     //std::shared_ptr<clsRelay> relay1 = std::make_shared<clsRelay>();
      clsRelay ArrayRelay[50];
-     // DI
-     uint8_t m_di_dataID[50];
-     uint8_t mu16_di_datacoil[50];
-
-     clsdiscreteinput ArrayDI[50];
-
+     //static void 			UpdateDevices();
+     //static void 			DeviceInitialize();
+     //static void 			RegisterDevice(std::string szDeviceID, std::shared_ptr<imodbusdevice> pDevice);
+     //static void 			RemoveDevice(std::string szDeviceID);
 
 };
 

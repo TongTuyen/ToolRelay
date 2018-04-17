@@ -27,12 +27,18 @@ class imodbusdevice
 public:
     imodbusdevice();
     virtual void 					SetDeviceID(uint8_t szDeviceID) = 0;
-    virtual uint8_t                 GetDeviceID() = 0;
-
+    virtual uint8_t 			GetDeviceID() = 0;
+//    virtual void 					SetDeviceDescription(std::string szDescription) = 0;
+//    virtual std::string 			GetDeviceDescription() = 0;
     virtual void					SetDevType(DevType_t type) = 0;
     virtual DevType_t				GetDevType() = 0;
+//    virtual int16_t		 			ExecuteCommand(uint16_t u16Cmd, uint16_t u16SubCmd) = 0;
+////    virtual char*		 			GetCurrentStatus() =0;
+////    virtual bool					IsVisible() = 0;
+////    virtual void					SetVisible(bool visible) = 0;
 
-
+////    virtual	uint8_t					UpdateValues(void* pvArgs) = 0;
+//    virtual uint16_t 				ReadValue() = 0;
 
 };
 
